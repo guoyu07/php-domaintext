@@ -54,6 +54,28 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     */
+    public function getRegisteredDomainNames()
+    {
+        $registry = new Registry();
+        $names = $registry->getNames();
+
+        $this->assertCount(0, $names);
+
+        $registry->register('foo');
+        $registry->register('bar');
+        $registry->register('baz');
+
+        $names = $registry->getNames();
+
+        $this->assertCount(3, $names);
+        $this->assertEquals($names[0], 'foo');
+        $this->assertEquals($names[1], 'bar');
+        $this->assertEquals($names[2], 'baz');
+    }
+
+    /**
+     * @test
      * @expectedException \Kumatch\DomainText\InvalidArgumentException
      */
     public function throwExceptionIfGetDomainIsNotRegistered()

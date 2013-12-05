@@ -7,7 +7,7 @@ use Symfony\Component\Yaml\Yaml;
 class Registry
 {
 
-    /** @var array  */
+    /** @var array[]  */
     protected $domainTexts = array();
 
     /**
@@ -39,6 +39,15 @@ class Registry
             return new ImmutableDomain($domainTexts);
         }
     }
+
+    /**
+     * @return string[]
+     */
+    public function getNames()
+    {
+        return array_keys($this->domainTexts);
+    }
+
 
     /**
      * @param $filename
