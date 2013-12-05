@@ -3,6 +3,9 @@ DomainText
 
 Register texts of domain and get a text (like gettext).
 
+[![Build Status](https://travis-ci.org/kumatch/php-domaintext.png?branch=master)](https://travis-ci.org/kumatch/php-domaintext)
+
+
 
 Install
 -----
@@ -44,9 +47,6 @@ $num  = $domain->get(10);     // $num  = 100
 $zero = $domain->get(0);      // $zero = "zero"
 
 $person = $domain->get("person") // $person = "person", not blank or null.
-```
-
-
 ```
 
 
