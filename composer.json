@@ -1,0 +1,30 @@
+{
+    "name": "kumatch/domaintext",
+    "description":"Register texts of domain and get a text (like gettext).",
+    "type":"library",
+    "homepage": "https://github.com/kumatch/php-domaintext",
+    "keywords":["text"],
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Yosuke Kumakura",
+            "homepage": "https://github.com/kumatch"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.*",
+        "symfony/yaml": "2.*"
+    },
+    "suggest": {
+        "symfony/yaml": "If you want to use YAML format for domain texts."
+    },
+    "autoload": {
+        "psr-0": {
+            "Kumatch": "src/"
+        }
+    }
+}

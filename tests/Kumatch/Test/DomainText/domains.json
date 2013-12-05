@@ -1,0 +1,8 @@
+{
+  "domain_a": {
+      "foo": "bar",
+      "baz": "quux"
+  },
+
+  "domain_b": { }
+}
