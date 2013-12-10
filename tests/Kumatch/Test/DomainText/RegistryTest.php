@@ -91,13 +91,42 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
     public function provideDomainFiles()
     {
         return array(
-            array(__DIR__ . "/domains.json"),
-            array(__DIR__ . "/domains.ini"),
-            array(__DIR__ . "/domains.yml"),
-            array(__DIR__ . "/domains.yaml"),
+            array(__DIR__ . "/samples/domains.json"),
+            array(__DIR__ . "/samples/domains.ini"),
+            array(__DIR__ . "/samples/domains.yml"),
+            array(__DIR__ . "/samples/domains.yaml"),
         );
     }
 
+    public function provideBlankFiles()
+    {
+        return array(
+            array(__DIR__ . "/samples/blank.json"),
+            array(__DIR__ . "/samples/blank.ini"),
+            array(__DIR__ . "/samples/blank.yml"),
+            array(__DIR__ . "/samples/blank.yaml"),
+        );
+    }
+
+    public function provideBrokenFiles()
+    {
+        return array(
+            array(__DIR__ . "/samples/broken.json"),
+            array(__DIR__ . "/samples/broken.ini"),
+            array(__DIR__ . "/samples/broken.yml"),
+            array(__DIR__ . "/samples/broken.yaml"),
+        );
+    }
+
+    public function provideNotExistsFiles()
+    {
+        return array(
+            array(__DIR__ . "/samples/no.json"),
+            array(__DIR__ . "/samples/no.ini"),
+            array(__DIR__ . "/samples/no.yml"),
+            array(__DIR__ . "/samples/no.yaml"),
+        );
+    }
 
     /**
      * @test
@@ -113,5 +142,39 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(2, $domainA->count());
         $this->assertEquals(0, $domainB->count());
+    }
+
+    /**
+     * @test
+     * @dataProvider provideBlankFiles
+     */
+    public function throwNoExceptionIfLoadsBlankFile($filename)
+    {
+        $registry = new Registry();
+        $registry->load($filename);
+
+        $this->assertCount(0, $registry->getNames());
+    }
+
+    /**
+     * @test
+     * @dataProvider provideBrokenFiles
+     * @expectedException \Kumatch\DomainText\InvalidArgumentException
+     */
+    public function throwExceptionIfLoadsBrokenFile($filename)
+    {
+        $registry = new Registry();
+        $registry->load($filename);
+    }
+
+    /**
+     * @test
+     * @dataProvider provideNotExistsFiles
+     * @expectedException \Kumatch\DomainText\InvalidArgumentException
+     */
+    public function throwExceptionIfLoadsNotExistsFile($filename)
+    {
+        $registry = new Registry();
+        $registry->load($filename);
     }
 }

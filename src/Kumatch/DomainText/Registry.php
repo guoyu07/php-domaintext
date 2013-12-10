@@ -3,6 +3,7 @@
 namespace Kumatch\DomainText;
 
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Yaml\Exception\ParseException;
 
 class Registry
 {
@@ -76,7 +77,7 @@ class Registry
                 throw new InvalidArgumentException($filename . ': domains file format is not supported.');
         }
 
-        if (!$domains || !is_array($domains)) {
+        if (!is_array($domains)) {
             throw new InvalidArgumentException($filename . ': invalid domains file format.');
         }
 
@@ -87,24 +88,39 @@ class Registry
 
     /**
      * @param $filename
-     * @return array
+     * @return array|bool
      */
     protected function loadJSONFile($filename)
     {
         $assoc = true;
+        $json = json_decode(file_get_contents($filename), $assoc);
+        $error = json_last_error();
 
-        return json_decode(file_get_contents($filename), $assoc);
+        if ($error !== JSON_ERROR_NONE) {
+            return false;
+        }
+
+        if (!is_null($json)) {
+            return $json;
+        } else {
+            return array();
+        }
     }
 
     /**
      * @param $filename
-     * @return array
+     * @return array|bool
      */
     protected function loadINIFile($filename)
     {
         $processSections = true;
+        $ini = @parse_ini_file($filename, $processSections);
 
-        return parse_ini_file($filename, $processSections);
+        if (is_array($ini)) {
+            return $ini;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -113,6 +129,16 @@ class Registry
      */
     protected function loadYAMLFile($filename)
     {
-        return Yaml::parse($filename);
+        try {
+            $yaml = Yaml::parse($filename);
+        } catch (ParseException $e) {
+            return false;
+        }
+
+        if (!is_null($yaml)) {
+            return $yaml;
+        } else {
+            return array();
+        }
     }
 }
